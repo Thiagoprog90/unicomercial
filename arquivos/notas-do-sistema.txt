@@ -1,0 +1,43 @@
+//configurando git
+
+1. configurar nome git config --global user.name Thiagoprog90
+
+2. configurar email git config --global user.email thiago@unisystemsistemas.com.br
+
+3. configurar editor  git config --global core.editor "core --wait"
+3.1. git config --global core.autocrlt true
+
+4. abrir o config 
+git config --global core.editor
+"'C:\Users\thiag\AppData\Local\Programs\Microsoft VS Code\Code.exe' -n
+-w"
+
+5-ver arquivos para adicionar git status
+
+################ subir versão ################ 
+
+git add .
+git commit -a -m "configuração inicial 06"
+git push -u origin main
+ 
+################ baixar atualizações #############
+# git fetch 
+git pull origin master 
+##################################################
+
+
+//////////// linkar repositório/////////////////
+
+git clone https://gitlab.com/nandodegas/unicomercial.git
+
+//////////// criar novo repositório/////////////////
+
+
+criar repository
+git remote add origin https://github.com/Thiagoprog90/unicomercial.git
+git branch -M main
+git push -u origin main
+
+################ Banco de Dados #############
+
+no localhost so criar o banco unicomercial que o sistemas ja cria as tabelas
