@@ -6,7 +6,7 @@
 	$userDao = new UserDAO($conn, $BASE_URL);
 
 	$grupoDao = new GrupoDAO($conn, $BASE_URL);
-
+	//teste
 	
 
 	$id = filter_input(INPUT_GET, "id");
