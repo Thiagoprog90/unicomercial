@@ -17,12 +17,12 @@ git config --global core.editor
 ################ subir versão ################ 
 
 git add .
-git commit -a -m "configuração inicial 06"
+git commit -a -m "configuração inicial 07"
 git push -u origin main
  
 ################ baixar atualizações #############
 # git fetch 
-git pull origin master 
+git pull origin main 
 ##################################################
 
 
