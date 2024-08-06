@@ -19,6 +19,8 @@ git config --global core.editor
 git add .
 git commit -a -m "configuração inicial 07"
 git push -u origin main
+git push -u origin thiago
+
  
 ################ baixar atualizações #############
 # git fetch 
