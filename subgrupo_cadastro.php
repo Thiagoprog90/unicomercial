@@ -4,6 +4,8 @@
 	require_once("dao/UserDAO.php");
 	require_once("dao/GrupoDAO.php");
     require_once("dao/SubgrupoDAO.php");
+
+
 	$userDao = new UserDAO($conn, $BASE_URL);
 
 	$grupoDao = new GrupoDAO($conn, $BASE_URL);
@@ -15,26 +17,26 @@
 
 	
 	
-	
-    ///
+	//busca grupos para vincular no subgrupos
+	$grupos = $grupoDao->findAll();
+
 	if($search){
 		$searchSubGrupos = $subgrupoDao->findByDescricao($search);
 	}else{
 		$searchSubGrupos = $subgrupoDao->findAll();
 	}	
 	$typeUpdade = false;
+
 	if($id > 0){
 		$typeUpdade = true;
 	}
 	
 	
-	
-	$grupo = $grupoDao->findById($id);
-	
-	
+
+	$subgrupo = $subgrupoDao->findById($id);	
 
 
-	//$userData = $userDao->verifyToken(true);
+	
 ?>
 		<!-- end header-->
 		<!--page-wrapper-->
@@ -109,17 +111,16 @@
 																			<th>Excluir</th>
 																		</tr>
 																	</thead>
-																	<tbody>		
-																																
+																	<tbody>																																		
 																		<?php foreach($searchSubGrupos as $searchSubGrupo): ?>
 																			<tr>
 																				<td ><?= $searchSubGrupo->id ?></td>
                                                                                 <td ><?= $searchSubGrupo->descricaoGrupo ?></td>
 																				<td><?= $searchSubGrupo->descricao ?></td>														
 																				
-																				<td><a href="<?= $BASE_URL ?>grupo_cadastro.php?id=<?= $searchSubGrupo->id ?>">Editar</a></td>																		
+																				<td><a href="<?= $BASE_URL ?>subgrupo_cadastro.php?id=<?= $searchSubGrupo->id ?>">Editar</a></td>																		
 																				<td>
-																					<form action="<?= $BASE_URL ?>grupo_process.php" method="POST">
+																					<form action="<?= $BASE_URL ?>subgrupo_process.php" method="POST">
 																						<input type="hidden" name="type" value="delete">
 																						<input type="hidden" name="id" value="<?= $searchSubGrupo->id ?>">
 																						<div class="form-row" >
@@ -141,8 +142,7 @@
 															<!-- fim da tabela -->
 														</div>
 													</div>
-												</div>			
-												
+												</div>												
 												
 											</div>
 										<?php else: ?>
@@ -197,9 +197,9 @@
                                                                                 <td ><?= $searchSubGrupo->descricaoGrupo ?></td>
 																				<td><?= $searchSubGrupo->descricao ?></td>												
 																				
-																				<td><a href="<?= $BASE_URL ?>grupo_cadastro.php?id=<?= $searchSubGrupo->id ?>">Editar</a></td>																		
+																				<td><a href="<?= $BASE_URL ?>subgrupo_cadastro.php?id=<?= $searchSubGrupo->id ?>">Editar</a></td>																		
 																				<td>
-																					<form action="<?= $BASE_URL ?>grupo_process.php" method="POST">
+																					<form action="<?= $BASE_URL ?>subgrupo_process.php" method="POST">
 																						<input type="hidden" name="type" value="delete">
 																						<input type="hidden" name="id" value="<?= $searchSubGrupo->id ?>">
 																						<div class="form-row" >
@@ -221,14 +221,12 @@
 															<!-- fim da tabela -->
 														</div>
 													</div>
-												</div>			
-												
-												
+												</div>																					
 											</div>
 										<?php endif; ?>
 										<?php if($search): ?>
 											<div class="tab-pane fade" id="create" role="tabpanel" aria-labelledby="create-tab">
-												<form action="grupo_process.php" method="POST">
+												<form action="subgrupo_process.php" method="POST">
 													<?php if($typeUpdade): ?>
 														<input type="hidden" name="type" value="update">
 														<input type="hidden" name="id"  value="<?= $id ?>">
@@ -238,15 +236,27 @@
 													<div class="form-row">
                                                         <div class="form-group col-md-2">
                                                             <label>Grupo:</label>
-                                                            <select class="form-control radius-30" id="grupo" name="grupo" required="">
-                                                                <option value="">Selecione</option>
-                                                                <option value="">Hardware</option>
-                                                            </select>
-                                                        </div>
+															<?php if($subgrupo ): ?>
+																<select class="form-control radius-30" id="grupo" name="grupo" required="" value = "<?= $subgrupo->idgrupo ?>" >
+																	<option value="">Selecione</option>
+																	<?php foreach($grupos as $grupo): ?>                                                                
+																		<option value="<?= $grupo->id ?>"><?= $grupo->descricao ?></option>
+																	<?php endforeach; ?>
+																</select>
+															<?php else: ?>
+																<select class="form-control radius-30" id="grupo" name="grupo" required="">
+																	<option value="">Selecione</option>
+																	<?php foreach($grupos as $grupo): ?>                                                                
+																		<option value="<?= $grupo->id ?>"><?= $grupo->descricao ?></option>
+																	<?php endforeach; ?>
+																</select>
+															<?php endif; ?>		
+                                                        </div>														 
+														
 														<div class="form-group col-md-6">
 															<label>Descrição</label>	
-															<?php if($grupo ): ?>									
-																<input type="text" class="form-control radius-30" id="descricao" name="descricao" value = "<?= $grupo->descricao ?>" />
+															<?php if($subgrupo ): ?>									
+																<input type="text" class="form-control radius-30" id="descricao" name="descricao" value = "<?= $subgrupo->descricao ?>" />
 															<?php else: ?>
 																<input type="text" class="form-control radius-30" id="descricao" name="descricao"/>
 															<?php endif; ?>	
@@ -261,7 +271,7 @@
 											</div>
 										<?php else: ?>
 											<div class="tab-pane fade show active" id="create" role="tabpanel" aria-labelledby="create-tab">
-												<form action="grupo_process.php" method="POST">
+												<form action="subgrupo_process.php" method="POST">
 													<?php if($typeUpdade): ?>
 														<input type="hidden" name="type" value="update">
 														<input type="hidden" name="id"  value="<?= $id ?>">
@@ -271,15 +281,26 @@
 													<div class="form-row">
                                                         <div class="form-group col-md-2">
                                                             <label>Grupo:</label>
-                                                            <select class="form-control radius-30" id="grupo" name="grupo" required="">
-                                                                <option value="">Selecione</option>
-                                                                <option value="">Hardware</option>
-                                                            </select>
-                                                        </div>
+															<?php if($subgrupo ): ?>
+																<select class="form-control radius-30" id="grupo" name="grupo" required="" disabled >
+																	<option value="">Selecione</option>
+																	<?php foreach($grupos as $grupo): ?>                                                                
+																		<option value="<?= $grupo->id ?>"<?= $subgrupo->idgrupo ===  $grupo->id ? "selected" : "" ?> ><?= $grupo->descricao ?></option>
+																	<?php endforeach; ?>
+																</select>
+															<?php else: ?>
+																<select class="form-control radius-30" id="grupo" name="grupo" required="">
+																	<option value="">Selecione</option>
+																	<?php foreach($grupos as $grupo): ?>                                                                
+																		<option value="<?= $grupo->id ?>"><?= $grupo->descricao ?></option>
+																	<?php endforeach; ?>
+																</select>
+															<?php endif; ?>																
+                                                        </div>	
 														<div class="form-group col-md-6">
 															<label>Descrição</label>	
-															<?php if($grupo ): ?>									
-																<input type="text" class="form-control radius-30" id="descricao" name="descricao" value = "<?= $grupo->descricao ?>" />
+															<?php if($subgrupo ): ?>									
+																<input type="text" class="form-control radius-30" id="descricao" name="descricao" value = "<?= $subgrupo->descricao ?>" />
 															<?php else: ?>
 																<input type="text" class="form-control radius-30" id="descricao" name="descricao"/>
 															<?php endif; ?>	

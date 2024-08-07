@@ -14,12 +14,12 @@
     $type = filter_input(INPUT_POST,"type");
 
     if($type === "include"){
-        $grupo = filter_input(INPUT_POST, "grupo");
+        $idgrupo = filter_input(INPUT_POST, "grupo");
         $descricao = filter_input(INPUT_POST, "descricao");
 
-        if($descricao && $grupo ){
+        if($descricao && $idgrupo ){
             $subgrupo = new Subgrupo();
-            $subgrupo->grupo = $grupo;
+            $subgrupo->idgrupo = $idgrupo;
             $subgrupo->descricao = $descricao;
             $subgrupoDao->create($subgrupo);
         
@@ -28,4 +28,40 @@
            $message->setMessage("Por favor preencha todos os campos","error","back");
         }
 
+    }else if($type === "update"){
+        $id = filter_input(INPUT_POST, "id");
+        $descricao = filter_input(INPUT_POST, "descricao");
+        $idgrupo = filter_input(INPUT_POST, "grupo");
+
+
+        $subgrupoData = $subgrupoDao->findById($id);
+        if($subgrupoData){            
+            if($descricao ){
+                $subgrupoData->descricao = $descricao;
+                $subgrupoDao->update($subgrupoData);
+
+            } else {
+
+                $message->setMessage("Informações inválidas!", "error", "back");
+
+            }
+
+        } else {
+
+            $message->setMessage("Informações inválidas!", "error", "back");
+
+        }
+        
+
+    } else if($type === "delete") {
+        
+        
+        $id = filter_input(INPUT_POST, "id");
+        $subgrupo = $subgrupoDao->findById($id);
+		if($subgrupo) {
+		 	$subgrupoDao->deleteSubGrupo($id);     	
+
+		} else {
+			$message->setMessage("Informações inválidas!", "error", "index.php");
+		}
     }

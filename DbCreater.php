@@ -73,6 +73,7 @@
            
             $stmt->execute();
         }
+         
         public function verifyUser(){
             $userDao = new UserDAO($this->conn, $this->url);
             $stmt = $this->conn->prepare("SELECT * FROM users");
