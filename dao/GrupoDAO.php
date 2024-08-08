@@ -92,7 +92,7 @@
             
         }
         public function deleteGrupo($id){
-             $stmt = $this->conn->prepare("DELETE FROM grupo_cadastro WHERE gc_id LIKE '$id'");            
+            $stmt = $this->conn->prepare("DELETE FROM grupo_cadastro WHERE gc_id LIKE '$id'");            
 
             $stmt->execute();
 

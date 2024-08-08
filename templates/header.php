@@ -80,7 +80,7 @@
 						</li>
 						<li> <a href="<?= $BASE_URL ?>subgrupo_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de subgrupos</a>
 						</li>
-						<li> <a href="component-buttons.html"><i class="bx bx-right-arrow-alt"></i>Buttons</a>
+						<li> <a href="unidade_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de unidade</a>
 						</li>
 						<li> <a href="component-cards.html"><i class="bx bx-right-arrow-alt"></i>Cards</a>
 						</li>
@@ -384,7 +384,7 @@
 						</div>
 					<?php endif; ?>	
 					<?php if($flashMessage["type"]==="success"): ?>
-						<div class="alert bg-success text-white alert-dismissible fade show" role="alert"><?= $flashMessage["msg"] ." ". $userData->name?>
+						<div class="alert bg-success text-white alert-dismissible fade show" role="alert"><?= $flashMessage["msg"] ?>
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">	
 							</button>
 						</div>

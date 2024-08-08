@@ -106,7 +106,7 @@
 
             $stmt->execute();
 
-            // Mensagem de sucesso por remover grupo
+            // Mensagem de sucesso por remover subgrupo
             $this->message->setMessage("Grupo removido com sucesso!", "success", "subgrupo_cadastro.php");
             
         }
