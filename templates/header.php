@@ -64,84 +64,48 @@
 				</a>
 			</div>
 			<!--navigation-->
-			<ul class="metismenu" id="menu">
-				
-				
+			<ul class="metismenu" id="menu">			
 				
 				
 				<li>
 					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-10"><i class="bx bx-comment-edit"></i>
+						<div class="parent-icon icon-color-10"><i class="bx bx-clipboard"></i>
 						</div>
 						<div class="menu-title">Cadastros</div>
 					</a>
 					<ul>
-						<li> <a href="<?= $BASE_URL ?>grupo_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de grupos</a>
+						<li>
+							<a class="has-arrow" href="javascript:;">
+								<div class="parent-icon icon-color-11"><i class="lni lni-shopping-basket"></i>
+								</div>
+								<div class="products-title">produtos</div>
+							</a>
+							<ul>
+								<li> <a href="<?= $BASE_URL ?>grupo_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de grupos</a>
+								</li>
+								<li> <a href="<?= $BASE_URL ?>subgrupo_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de subgrupos</a>
+								</li>
+								<li> <a href="<?= $BASE_URL ?>unidade_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de unidade</a>
+								</li>
+							</ul>
 						</li>
-						<li> <a href="<?= $BASE_URL ?>subgrupo_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de subgrupos</a>
-						</li>
-						<li> <a href="unidade_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de unidade</a>
-						</li>
-						<li> <a href="component-cards.html"><i class="bx bx-right-arrow-alt"></i>Cards</a>
-						</li>
-						<li> <a href="component-carousels.html"><i class="bx bx-right-arrow-alt"></i>Carousel</a>
-						</li>
-						<li> <a href="component-acordians.html"><i class="bx bx-right-arrow-alt"></i>Acordians</a>
-						</li>
-						<li> <a href="component-list-groups.html"><i class="bx bx-right-arrow-alt"></i>List Groups</a>
-						</li>
-						<li> <a href="component-media-object.html"><i class="bx bx-right-arrow-alt"></i>Media Objects</a>
-						</li>
-						<li> <a href="component-modals.html"><i class="bx bx-right-arrow-alt"></i>Modal</a>
-						</li>
-						<li> <a href="component-navs.html"><i class="bx bx-right-arrow-alt"></i>Navs</a>
-						</li>
-						<li> <a href="components-navbar.html"><i class="bx bx-right-arrow-alt"></i>Navbar</a>
-						</li>
-						<li> <a href="component-paginations.html"><i class="bx bx-right-arrow-alt"></i>Pagination</a>
-						</li>
-						<li> <a href="component-popovers-tooltips.html"><i class="bx bx-right-arrow-alt"></i>Popovers & Tooltips</a>
-						</li>
-						<li> <a href="component-progress-bars.html"><i class="bx bx-right-arrow-alt"></i>Progress</a>
-						</li>
-						<li> <a href="component-spinners.html"><i class="bx bx-right-arrow-alt"></i>Spinners</a>
-						</li>
-						<li> <a href="component-notifications.html"><i class="bx bx-right-arrow-alt"></i>Notifications</a>
-						</li>
-						<li> <a href="components-avtars-chips.html"><i class="bx bx-right-arrow-alt"></i>Avatrs & Chips</a>
+						<li>							
+							<a class="has-arrow" href="javascript:;">
+								<div class="parent-icon icon-color-12"><i class="lni lni-service"></i>
+								</div>
+								<div class="service-title">Serviços</div>
+							</a>
+							<ul>
+								<li> <a href="<?= $BASE_URL ?>grupo_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de Serviços</a>
+								</li>
+								<li> <a href="<?= $BASE_URL ?>subgrupo_cadastro.php"><i class="bx bx-right-arrow-alt"></i>Cadastro de veiculos</a>
+								</li>
+							</ul>
+
 						</li>
 					</ul>
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-11"><i class="bx bx-repeat"></i>
-						</div>
-						<div class="menu-title">Content</div>
-					</a>
-					<ul>
-						<li> <a href="content-grid-system.html"><i class="bx bx-right-arrow-alt"></i>Grid System</a>
-						</li>
-						<li> <a href="content-typography.html"><i class="bx bx-right-arrow-alt"></i>Typography</a>
-						</li>
-						<li> <a href="content-text-utilities.html"><i class="bx bx-right-arrow-alt"></i>Text Utilities</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-12"> <i class="bx bx-donate-blood"></i>
-						</div>
-						<div class="menu-title">Icons</div>
-					</a>
-					<ul>
-						<li> <a href="icons-line-icons.html"><i class="bx bx-right-arrow-alt"></i>Line Icons</a>
-						</li>
-						<li> <a href="icons-boxicons.html"><i class="bx bx-right-arrow-alt"></i>Boxicons</a>
-						</li>
-						<li> <a href="icons-feather-icons.html"><i class="bx bx-right-arrow-alt"></i>Feather Icons</a>
-						</li>
-					</ul>
-				</li>
+				</li>				
+				
 				<li class="menu-label">Forms & Tables</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">

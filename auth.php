@@ -2,6 +2,7 @@
     require_once("globals.php");
     require_once("db.php");
 	require_once("DbCreater.php");
+	require_once("DbCreaterUni.php");
 	require_once("models/Message.php");
 
 	$message = new Message($BASE_URL);
@@ -14,7 +15,9 @@
 	}
 
 	$dbCreator = new DbCreater($BASE_URL,$conn);
+	$dbCreatorUni = new DbCreaterUni($BASE_URL,$connUni);
 	$dbCreator->createDB();
+	$dbCreatorUni->createDB();
 
 	
 

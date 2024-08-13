@@ -9,12 +9,20 @@
             $this->conn = $conn;
         }
         public function createDB(){
+            // create usuario
             $this->createUser();
+            
+
+
+
+            // cria tabelas sistema
             $this->createGrupoCadastro();
             $this->createSubgrupoCadastro();
             $this->createUnidadeCadastro();
 
         }
+       
+
         public function createUser(){
             $stmt = $this->conn->prepare(
                 "CREATE TABLE IF NOT EXISTS `users` (
@@ -44,6 +52,8 @@
                 $stmt->execute();
             }
         }
+            
+        
         public function createGrupoCadastro(){
             $stmt = $this->conn->prepare(
                 "CREATE TABLE IF NOT EXISTS `grupo_cadastro` (
@@ -54,7 +64,7 @@
                 COLLATE='utf8mb4_general_ci'
                 ENGINE=InnoDB
                 AUTO_INCREMENT=1
-                ;"
+                ;"          
             );
            
             $stmt->execute();
@@ -103,4 +113,5 @@
                 return true;
             }
         }
+        
     }
