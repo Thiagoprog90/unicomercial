@@ -9,10 +9,20 @@
             $this->conn = $conn;
         }
         public function createDB(){
+            // create usuario
             $this->createUser();
+            
+
+
+
+            // cria tabelas sistema
             $this->createGrupoCadastro();
             $this->createSubgrupoCadastro();
+            $this->createUnidadeCadastro();
+
         }
+       
+
         public function createUser(){
             $stmt = $this->conn->prepare(
                 "CREATE TABLE IF NOT EXISTS `users` (
@@ -28,7 +38,6 @@
                 )
                 COLLATE='utf8mb4_general_ci'
                 ENGINE=InnoDB
-                AUTO_INCREMENT=1
                 ;"
             );           
             $stmt->execute();
@@ -43,6 +52,8 @@
                 $stmt->execute();
             }
         }
+            
+        
         public function createGrupoCadastro(){
             $stmt = $this->conn->prepare(
                 "CREATE TABLE IF NOT EXISTS `grupo_cadastro` (
@@ -53,7 +64,7 @@
                 COLLATE='utf8mb4_general_ci'
                 ENGINE=InnoDB
                 AUTO_INCREMENT=1
-                ;"
+                ;"          
             );
            
             $stmt->execute();
@@ -64,7 +75,9 @@
                     `sc_id` INT(11) NOT NULL AUTO_INCREMENT,
                     `gc_id` INT(11) NOT NULL DEFAULT '0',
                     `sc_descricao` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
-                    PRIMARY KEY (`sc_id`) USING BTREE
+                    PRIMARY KEY (`sc_id`) USING BTREE,
+                    INDEX `FK_subgrupo_cadastro_grupo_cadastro` (`gc_id`) USING BTREE,
+                    CONSTRAINT `FK_subgrupo_cadastro_grupo_cadastro` FOREIGN KEY (`gc_id`) REFERENCES `grupo_cadastro` (`gc_id`) ON UPDATE NO ACTION ON DELETE NO ACTION
                 )
                 COLLATE='utf8mb4_general_ci'
                 ENGINE=InnoDB
@@ -73,6 +86,22 @@
            
             $stmt->execute();
         }
+        public function createUnidadeCadastro(){
+            $stmt = $this->conn->prepare(
+                "CREATE TABLE IF NOT EXISTS `unidade_cadastro` (
+                    `uc_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `uc_descricao` VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8mb4_general_ci',
+	                `uc_sigla` CHAR(5) NOT NULL DEFAULT '0' COLLATE 'utf8mb4_general_ci',
+                    PRIMARY KEY (`uc_id`) USING BTREE
+                )
+                COLLATE='utf8mb4_general_ci'
+                ENGINE=InnoDB
+                ;"
+            );
+           
+            $stmt->execute();
+        }
+         
         public function verifyUser(){
             $userDao = new UserDAO($this->conn, $this->url);
             $stmt = $this->conn->prepare("SELECT * FROM users");
@@ -84,4 +113,5 @@
                 return true;
             }
         }
+        
     }

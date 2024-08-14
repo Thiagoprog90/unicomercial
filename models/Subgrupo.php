@@ -10,7 +10,6 @@
         public function update(Subgrupo $subgrupo);
         public function findByDescricao($search);
         public function findById($id);
-        public function findByGrupo($grupo);
         public function deleteSubGrupo($id);
         public function findAll();
     }

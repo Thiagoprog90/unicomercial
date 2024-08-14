@@ -25,40 +25,89 @@
             return $subgrupo;
         }
         public function create(Subgrupo $subgrupo){
-           
+           $stmt = $this->conn->prepare("INSERT INTO subgrupo_cadastro(
+                gc_id,sc_descricao
+            ) VALUES (
+                :idgrupo,:descricao
+            )");
+            $stmt->bindParam(":idgrupo",$subgrupo->idgrupo);
+            $stmt->bindParam(":descricao",$subgrupo->descricao);
+
+            $stmt->execute();
+            
+
+            $this->message->setMessage("Subgrupo gravado com sucesso","success","subgrupo_cadastro.php");
 
         }
         public function update(Subgrupo $subgrupo){
+            $stmt = $this->conn->prepare("UPDATE subgrupo_cadastro SET
+                sc_descricao = '$subgrupo->descricao'
+                WHERE sc_id = '$subgrupo->id'      
+            ");
+            
+
+            $stmt->execute();
+
+            // Mensagem de sucesso por editar filme
+            $this->message->setMessage("Subgrupo atualizado com sucesso!", "success", "subgrupo_cadastro.php");
             
         }
         public function findByDescricao($search){
-            $grupos = [];
+            $subgrupos = [];
 
-            $stmt = $this->conn->prepare("SELECT subgrupo_cadastro.sc_id,subgrupo_cadastro.gc_id, subgrupo_cadastro.sc_descricao, grupo_cadastro.gc_descricao, grupo_cadastro.gc_id  
-                                          FROM  subgrupo_cadastro, grupo_cadastro WHERE grupo_cadastro.gc_id = subgrupo_cadastro.gc_id AND sc_id LIKE '%$search%' OR sc_descricao LIKE '%$search%'");
+            $stmt = $this->conn->prepare("SELECT subgrupo_cadastro.sc_id, subgrupo_cadastro.sc_descricao,subgrupo_cadastro.gc_id, grupo_cadastro.gc_descricao FROM subgrupo_cadastro  
+                                          LEFT JOIN grupo_cadastro ON subgrupo_cadastro.gc_id = grupo_cadastro.gc_id
+                                          WHERE sc_id LIKE '%$search%' OR sc_descricao LIKE '%$search%'OR grupo_cadastro.gc_descricao LIKE '%$search%'");
 
             $stmt->execute();
 
             if($stmt->rowCount() > 0) {
 
-                $gruposArray = $stmt->fetchAll();
+                $subgruposArray = $stmt->fetchAll();
 
-                foreach($gruposArray as $grupo) {
-                    $grupos[] = $this->buildSubGrupo($grupo);
+                foreach($subgruposArray as $subgrupo) {
+                    $subgrupos[] = $this->buildSubGrupo($subgrupo);
                 }
 
             }
 
-            return $grupos;
+            return $subgrupos;
             
         }
         public function findById($id){
+            if($id != ""){
+                $stmt = $this->conn->prepare("SELECT subgrupo_cadastro.sc_id, subgrupo_cadastro.sc_descricao,subgrupo_cadastro.gc_id, grupo_cadastro.gc_descricao FROM subgrupo_cadastro 
+                                            LEFT JOIN grupo_cadastro ON subgrupo_cadastro.gc_id = grupo_cadastro.gc_id
+                                            WHERE sc_id = :id");
+                $stmt->bindParam(":id",$id);
+                $stmt->execute();
+
+                if($stmt->rowCount()> 0){
+                    $data = $stmt->fetch();
+                    $subgrupo = $this->buildSubGrupo($data);
+                    if($subgrupo){
+                        return $subgrupo;
+                    }else{
+                        return false;
+                    }
+                    
+                }else{
+                    return false;
+                }
+
+            }else{
+                return false;
+            }
            
         }
-        public function findByGrupo($grupo){
-            
-        }
+       
         public function deleteSubGrupo($id){
+            $stmt = $this->conn->prepare("DELETE FROM subgrupo_cadastro WHERE sc_id LIKE '$id'");            
+
+            $stmt->execute();
+
+            // Mensagem de sucesso por remover subgrupo
+            $this->message->setMessage("Grupo removido com sucesso!", "success", "subgrupo_cadastro.php");
             
         }
         public function findAll(){
