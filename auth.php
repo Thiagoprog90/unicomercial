@@ -1,69 +1,17 @@
 <?php
-    require_once("globals.php");
-    require_once("db.php");
-	require_once("DbCreater.php");
-	require_once("DbCreaterUni.php");
-	require_once("models/Message.php");
-
-	$message = new Message($BASE_URL);
-
-	$flashMessage = $message->getMessage();
-
-	if(!empty($flashMessage["msg"])){
-		//limpar a msg
-		$message->clearMessage();
-	}
-
-	$dbCreator = new DbCreater($BASE_URL,$conn);
-	$dbCreatorUni = new DbCreaterUni($BASE_URL,$connUni);
-	$dbCreator->createDB();
-	$dbCreatorUni->createDB();
-
-	
-
+$titulo = 'Unicomercial';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<!-- Required meta tags -->
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-	<title>Unicomercial - login</title>
-	<!--favicon-->
-	<link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
-	<!-- loader-->
-	<link href="assets/css/pace.min.css" rel="stylesheet" />
-	<script src="assets/js/pace.min.js"></script>
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-	<!-- Icons CSS -->
-	<link rel="stylesheet" href="assets/css/icons.css" />
-	<!-- App CSS -->
-	<link rel="stylesheet" href="assets/css/app.css" />
+	<?php include('head.php');?>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-login">
-	<?php if(!empty($flashMessage["msg"])): ?>
-		<?php if($flashMessage["type"]==="error"): ?>
-			<div class="alert bg-warning text-white alert-dismissible fade show" role="alert"><?= $flashMessage["msg"] ?>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">				
-				</button>
-			</div>
-		<?php endif; ?>		
-		<?php if($flashMessage["type"]==="warning"): ?>
-			<div class="alert bg-warning text-white alert-dismissible fade show" role="alert"><?= $flashMessage["msg"] ?>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">				
-				</button>
-			</div>
-		<?php endif; ?>	
-		<?php if($flashMessage["type"]==="success"): ?>
-			<div class="alert bg-success text-white alert-dismissible fade show" role="alert"><?= $flashMessage["msg"] ?>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">	
-				</button>
-			</div>
-		<?php endif; ?>			
-	<?php endif; ?>
+	
 	<!-- wrapper -->
 	<div class="wrapper">
 		<div class="section-authentication-login d-flex align-items-center justify-content-center">
@@ -77,36 +25,19 @@
 										<img src="assets/images/logo-icon.png" width="80" alt="">
 										<h3 class="mt-4 font-weight-bold">Bem vindo!</h3>
 									</div>							
-									<form method="POST" action="<?= $BASE_URL ?>auth_process.php">	
-										<input type="hidden" name="type" value="login">
+									<form id="loginForm">	
 										<div class="form-group mt-4">
-											<label>Email</label>
-											<input type="text" class="form-control"  id="email" name="email" placeholder="Digite seu Email" />
+											<label>Matricula</label>
+											<input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite Sua Matricula" />
 										</div>
 										<div class="form-group">
 											<label>Senha</label>
-											<input type="password" class="form-control" id="password" name="password" placeholder="Digite sua Senha" />
-										</div>
-										<div class="form-row">
-											<div class="form-group col">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
-													<label class="custom-control-label" for="customSwitch1">Remember Me</label>
-												</div>
-											</div>
-											<div class="form-group col text-right"> <a href="authentication-forgot-password.html"><i class='bx bxs-key mr-2'></i>Forget Password?</a>
-											</div>
+											<input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua Senha" />
 										</div>
 										<div class="btn-group mt-3 w-100">
 											<button type="submit" class="btn btn-primary btn-block">Entrar
-											<i class="lni lni-arrow-right"></i>
+												<i class="lni lni-arrow-right"></i>
 											</button>
-										</div>
-										
-										<hr>
-										<div class="text-center">
-											<p class="mb-0">Don't have an account? <a href="auth_register.php">Sign up</a>
-											</p>
 										</div>
 									</form>
 								</div>
@@ -122,6 +53,68 @@
 		</div>
 	</div>
 	<!-- end wrapper -->
-</body>
 
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+    <script>
+    $(document).ready(function() {
+        $('#loginForm').on('submit', function(event) {
+            event.preventDefault(); // Prevenir o comportamento padrão do formulário
+
+            const cpf = $('#cpf').val();
+            const senha = $('#senha').val();
+
+            if (!cpf || !senha) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Atenção',
+                    text: 'Por favor, preencha todos os campos.'
+                });
+                return;
+            }
+
+            $.ajax({
+                url: 'api/api-logon/api-login.php', // Substitua pela URL correta da API
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    cpf: cpf,
+                    senha: senha
+                },
+                success: function(response) {
+                    if (response.sucesso) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso',
+                            text: response.msg
+                        }).then(() => {
+                            window.location.href = 'login-home.php';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro',
+                            text: response.msg
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: 'Não foi possível conectar à API. Tente novamente mais tarde.'
+                    });
+                    console.error('Erro na requisição:', xhr.responseText);
+                }
+            });
+        });
+    });
+    </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
 </html>

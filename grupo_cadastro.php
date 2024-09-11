@@ -1,298 +1,146 @@
 <?php
-	
-	require_once("templates/header.php");
-	require_once("dao/UserDAO.php");
-	require_once("dao/GrupoDAO.php");
-	$userDao = new UserDAO($conn, $BASE_URL);
-
-	$grupoDao = new GrupoDAO($conn, $BASE_URL);
-	//teste tttttt
-	
-
-	$id = filter_input(INPUT_GET, "id");
-	$search = filter_input(INPUT_GET, "search");	
-
-	
-	
-	
-	if($search){
-		$searchGrupos = $grupoDao->findByDescricao($search);
-	}else{
-		$searchGrupos = $grupoDao->findAll();
-	}	
-	$typeUpdade = false;
-	if($id > 0){
-		$typeUpdade = true;
-	}
-	
-	
-	
-	$grupo = $grupoDao->findById($id);
-	
-	
 
 
-	//$userData = $userDao->verifyToken(true);
-?>
-		<!-- end header-->
-		<!--page-wrapper-->
-		<div class="page-wrapper">
-			<!--page-content-wrapper-->
-			<div class="page-content-wrapper" >
-				<div class="page-content">	
-					<div class="col-12 col-lg-12">
-						<div class="card radius-15 border-lg-top-primary">
-							<div class="card-body p-5">
-								<div class="card-title d-flex align-items-center">									
-									<h4 class="mb-0 text-primary">Cadastro de grupos</h4>
-								</div>
-								<hr>
-								<div class="form-body">
-									<?php if($search): ?>
-										<ul class="nav nav-tabs" id="myTab" role="tablist">
-											<li class="nav-item" role="presentation"> <a class="nav-link active" id="search-tab" data-toggle="tab" href="#search" role="tab" aria-controls="search" aria-selected="true">Consulta</a>
-											</li>
-											<li class="nav-item" role="presentation"> <a class="nav-link" id="create-tab" data-toggle="tab" href="#create" role="tab" aria-controls="create" aria-selected="false">Cadastro</a>
-											</li>										
-										</ul>
-									<?php else: ?>
-										<ul class="nav nav-tabs" id="myTab" role="tablist">
-											<li class="nav-item" role="presentation"> <a class="nav-link" id="search-tab" data-toggle="tab" href="#search" role="tab" aria-controls="search" aria-selected="false">Consulta</a>
-											</li>
-											<li class="nav-item" role="presentation"> <a class="nav-link active" id="create-tab" data-toggle="tab" href="#create" role="tab" aria-controls="create" aria-selected="true">Cadastro</a>
-											</li>										
-										</ul>
-									<?php endif; ?>
-									<div class="tab-content p-3" id="myTabContent">
-										<?php if($search): ?>
-											<div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
-												<form action="grupo_cadastro.php" method="GET">
-												<!-- Consulta -->
-													<div class="form-row"  id="form-busca-avancada">												
-														<div class="form-group col-md-4">
-															<label for="search">Busca:</label>
-															<div class="input-group"  >
-																<input type="text" class="form-control radius-40" id="search" name="search" value="" placeholder= "Pesquise aqui...">
-															</div>
-														</div>																								
-													</div>
-													<div class="form-row" >
-														<div class="btn-group mt-3 w-40">
-															<button type="submit" class="btn btn-primary radius-30 btn-block">Buscar
-																<i class="lni lni-search-alt"></i>
-															</button>
-														</div>												
-													</div>
-												</form>
-												<div class="form-row" >
-													<hr><hr>
-												</div>
-												<div class="form-row">
-													<div class="card col-md-12">
-														<div class="card-body ">
-															<hr>
-															<div class="card-title">
-																<h4 class="mb-0">Grupos Cadastrados</h4>
-															</div>	
-															<hr>
-															<!-- tabela -->
-															<div class="table-responsive ">
-																<table id="example" class="table table-striped table-bordered" style="width:100%">
-																	<thead>
-																		<tr>
-																			<th >Codigo</th>
-																			<th>Descri√ß√£o</th>																	
-																			<th>Editar</th>
-																			<th>Excluir</th>
-																		</tr>
-																	</thead>
-																	<tbody>		
-																																
-																		<?php foreach($searchGrupos as $searchGrupo): ?>
-																			<tr>
-																				<td ><?= $searchGrupo->id ?></td>
-																				<td><?= $searchGrupo->descricao ?></td>														
-																				
-																				<td><a href="<?= $BASE_URL ?>grupo_cadastro.php?id=<?= $searchGrupo->id ?>">Editar</a></td>																		
-																				<td>
-																					<form action="<?= $BASE_URL ?>grupo_process.php" method="POST">
-																						<input type="hidden" name="type" value="delete">
-																						<input type="hidden" name="id" value="<?= $searchGrupo->id ?>">
-																						<div class="form-row" >
-																							<div class="btn-group mt-2 w-40">
-																								<button type="submit" class="btn btn-primary radius-30 btn-block" >Excluir</button>
-																							</div>												
-																						</div>
-																						</button>
-																					</form>
-																				</td>																		
-																			</tr>
-																		<?php endforeach; ?>																								
-																	</tbody>																														
-																</table>
-																<?php if(count($searchGrupos) === 0): ?>
-																	<p class="empty-list">Ainda n√£o h√° Grupos cadastrados ou Grupo(s) com a pesquisa realizada!</p>
-																<?php endif; ?>		
-															</div>
-															<!-- fim da tabela -->
-														</div>
-													</div>
-												</div>			
-												
-												
-											</div>
-										<?php else: ?>
-											<div class="tab-pane fade" id="search" role="tabpanel" aria-labelledby="search-tab">
-												<form action="grupo_cadastro.php" method="GET">
-												<!-- Consulta -->
-													<div class="form-row"  id="form-busca-avancada">												
-														<div class="form-group col-md-4">
-															<label for="search">Busca:</label>
-															<div class="input-group"  >
-																<input type="text" class="form-control radius-40" id="search" name="search" value="" placeholder= "Pesquise aqui...">
-															</div>
-														</div>				
-																								
-													</div>
-													<div class="form-row" >
-														<div class="btn-group mt-3 w-40">
-															<button type="submit" class="btn btn-primary radius-30 btn-block">Buscar
-																<i class="lni lni-search-alt"></i>
-															</button>
-														</div>												
-													</div>
-												</form>
-												<div class="form-row" >
-													<hr><hr>
-												</div>
-												<div class="form-row">
-													<div class="card col-md-12">
-														<div class="card-body ">
-															<hr>
-															<div class="card-title">
-																<h4 class="mb-0">Grupos Cadastrados</h4>
-															</div>	
-															<hr>
-															<!-- tabela -->
-															<div class="table-responsive ">
-																<table id="example" class="table table-striped table-bordered" style="width:100%">
-																	<thead>
-																		<tr>
-																			<th >Codigo</th>
-																			<th>Descri√ß√£o</th>																	
-																			<th>Editar</th>
-																			<th>Excluir</th>
-																		</tr>
-																	</thead>
-																	<tbody>		
-																																
-																		<?php foreach($searchGrupos as $searchGrupo): ?>
-																			<tr>
-																				<td ><?= $searchGrupo->id ?></td>
-																				<td><?= $searchGrupo->descricao ?></td>												
-																				
-																				<td><a href="<?= $BASE_URL ?>grupo_cadastro.php?id=<?= $searchGrupo->id ?>">Editar</a></td>																		
-																				<td>
-																					<form action="<?= $BASE_URL ?>grupo_process.php" method="POST">
-																						<input type="hidden" name="type" value="delete">
-																						<input type="hidden" name="id" value="<?= $searchGrupo->id ?>">
-																						<div class="form-row" >
-																							<div class="btn-group mt-2 w-40">
-																								<button type="submit" class="btn btn-primary radius-30 btn-block" >Excluir</button>
-																							</div>												
-																						</div>
-																						</button>
-																					</form>
-																				</td>																		
-																			</tr>
-																		<?php endforeach; ?>																								
-																	</tbody>																														
-																</table>
-																<?php if(count($searchGrupos) === 0): ?>
-																	<p class="empty-list">Ainda n√£o h√° Grupos cadastrados ou Grupo(s) com a pesquisa realizada!</p>
-																<?php endif; ?>		
-															</div>
-															<!-- fim da tabela -->
-														</div>
-													</div>
-												</div>			
-												
-												
-											</div>
-										<?php endif; ?>
-										<?php if($search): ?>
-											<div class="tab-pane fade" id="create" role="tabpanel" aria-labelledby="create-tab">
-												<form action="grupo_process.php" method="POST">
-													<?php if($typeUpdade): ?>
-														<input type="hidden" name="type" value="update">
-														<input type="hidden" name="id"  value="<?= $id ?>">
-													<?php else: ?>
-														<input type="hidden" name="type" value="include">
-													<?php endif; ?>
-													<div class="form-row">
-														<div class="form-group col-md-6">
-															<label>Descri√ß√£o</label>	
-															<?php if($grupo ): ?>									
-																<input type="text" class="form-control radius-30" id="descricao" name="descricao" value = "<?= $grupo->descricao ?>" />
-															<?php else: ?>
-																<input type="text" class="form-control radius-30" id="descricao" name="descricao"/>
-															<?php endif; ?>	
-														</div>																								
-													</div>
-													<div class="btn-group mt-3 w-40">
-														<button type="submit" class="btn btn-primary radius-30 btn-block">Gravar
-															<i class="lni lni-arrow-right"></i>
-														</button>
-													</div>
-												</form>
-											</div>
-										<?php else: ?>
-											<div class="tab-pane fade show active" id="create" role="tabpanel" aria-labelledby="create-tab">
-												<form action="grupo_process.php" method="POST">
-													<?php if($typeUpdade): ?>
-														<input type="hidden" name="type" value="update">
-														<input type="hidden" name="id"  value="<?= $id ?>">
-													<?php else: ?>
-														<input type="hidden" name="type" value="include">
-													<?php endif; ?>
-													<div class="form-row">
-														<div class="form-group col-md-6">
-															<label>Descri√ß√£o</label>	
-															<?php if($grupo ): ?>									
-																<input type="text" class="form-control radius-30" id="descricao" name="descricao" value = "<?= $grupo->descricao ?>" />
-															<?php else: ?>
-																<input type="text" class="form-control radius-30" id="descricao" name="descricao"/>
-															<?php endif; ?>	
-														</div>
-																								
-													</div>
-													<div class="btn-group mt-3 w-40">
-														<button type="submit" class="btn btn-primary radius-30 btn-block">Gravar
-															<i class="lni lni-arrow-right"></i>
-														</button>
-													</div>
-												</form>
-											</div>		
-										<?php endif; ?>								
-									</div>
-								</div> 
-							</div>
-						</div>					
-					</div>	
-				</div>	
-			</div>
-			<!--end page-content-wrapper-->
-		</div>
-		<!--end page-wrapper-->
-		<!--start overlay-->
-		<div class="overlay toggle-btn-mobile"></div>
-		<!--end overlay-->
-		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
-		<!--End Back To Top Button-->
-		<!--footer -->
+// ConfiguraÁıes do banco de dados
+$hostname_1 = "localhost";
+$username_1 = "root";
+$password_1 = "";
+$database_1 = "unisystem";
 
-<?php
-	require_once("templates/footer.php");
+// Conectar ao banco de dados
+$link = mysqli_connect($hostname_1, $username_1, $password_1, $database_1);
+mysqli_set_charset($link, 'utf8mb4');
 
+if (!$link) {
+    die("Error: Unable to connect to MySQL. Debugging errno: " . mysqli_connect_errno() . " Debugging error: " . mysqli_connect_error());
+}
+
+// Receber os dados via POST
+$id = $_POST['id'] ?? null;
+$descricao = $_POST['descricao'] ?? null;
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['delete'])) {
+        // Excluir o registro
+        $stmt = $link->prepare('DELETE FROM grupo_cadastro WHERE gc_id = ?');
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+    } elseif ($id) {
+        // Se ID estiver presente, atualizar o registro
+        $stmt = $link->prepare('UPDATE grupo_cadastro SET gc_descricao = ? WHERE gc_id = ?');
+        $stmt->bind_param('si', $descricao, $id);
+        $stmt->execute();
+    } else {
+        // Caso contr·rio, adicionar um novo registro
+        $stmt = $link->prepare('INSERT INTO grupo_cadastro (gc_descricao) VALUES (?)');
+        $stmt->bind_param('s', $descricao);
+        $stmt->execute();
+    }
+
+    // Redirecionar apÛs a submiss„o do formul·rio
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
+}
+
+// Buscar registros existentes
+$sql = "SELECT * FROM grupo_cadastro";
+$result = $link->query($sql);
+
+if (!$result) {
+    die("Erro na consulta SQL: " . $link->error);
+}
+
+// Fechar a conex„o apÛs a consulta
+$link->close();
 ?>
 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Grupos</title>
+    <!-- Incluindo Bootstrap CSS, DataTables CSS e jQuery -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+   
+</head>
+<body>
+    <div class="container">
+        <h2>Cadastro de Grupos</h2>
+
+        <!-- Abas de NavegaÁ„o -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Cadastro</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Tabela</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <!-- Aba de Cadastro -->
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form method="POST" class="mt-4">
+                    <input type="hidden" id="id" name="id">
+                    <div class="form-group">
+                        <label for="descricao">DescriÁ„o:</label>
+                        <input type="text" id="descricao" name="descricao" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                </form>
+            </div>
+
+            <!-- Aba de Tabela -->
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <!-- Tabela de Registros -->
+                <table id="example" class="display mt-4">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>DescriÁ„o</th>
+                            <th>AÁıes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($row['gc_id']) ?></td>
+                                <td><?= htmlspecialchars($row['gc_descricao']) ?></td>
+                                <td>
+                                    <!-- Bot„o de Editar -->
+                                    <button class="btn btn-primary" onclick="editRecord('<?= $row['gc_id'] ?>', '<?= htmlspecialchars($row['gc_descricao'], ENT_QUOTES) ?>')">Editar</button>
+                                    <!-- Bot„o de Excluir -->
+                                    <form method="POST" style="display:inline-block;">
+                                        <input type="hidden" name="id" value="<?= $row['gc_id'] ?>">
+                                        <button type="submit" name="delete" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este registro?');">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incluindo Bootstrap JS, jQuery e DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Portuguese-Brasil.json"
+                }
+            });
+        });
+
+        function editRecord(id, descricao) {
+            $('#id').val(id);
+            $('#descricao').val(descricao);
+            $('#myTab a[href="#home"]').tab('show'); // Show the "Cadastro" tab
+        }
+    </script>
+</body>
+</html>
