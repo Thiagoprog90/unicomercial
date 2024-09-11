@@ -21,7 +21,7 @@ git checkout -b thiago
 ################ subir versão ################ 
 
 git add .
-git commit -a -m "configuração inicial 11"
+git commit -a -m "configuração inicial 00001"
 git push -u origin main
 git push -u origin thiago
 
